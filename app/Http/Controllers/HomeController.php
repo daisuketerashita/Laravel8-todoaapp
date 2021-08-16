@@ -59,4 +59,15 @@ class HomeController extends Controller
             'edit_memo' => $edit_memo,
         ]);
     }
+
+    public function update(Request $request){
+        $posts = $request->all();
+
+        Memo::where('id',$posts['memo_id'])->update([
+            'content' => $posts['content'],
+            'user_id' => \Auth::id(),
+        ]);
+
+        return redirect()->route('home');
+    }
 }

@@ -3,8 +3,9 @@
 @section('content')
 <div class="card">
     <div class="card-header">メモ編集</div>
-    <form class="card-body" action="{{ route('store') }}" method="post">
+    <form class="card-body" action="{{ route('update') }}" method="post">
     @csrf
+    <input type="hidden" value="{{ $edit_memo->id }}" name="memo_id">
         <div class="form-group">
             <textarea name="content" rows="3" class="form-control" placeholder="ここにメモを入力">{{ $edit_memo->content }}</textarea>
         </div>
