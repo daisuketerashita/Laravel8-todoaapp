@@ -44,4 +44,19 @@ class HomeController extends Controller
 
         return redirect()->route('home');
     }
+
+    public function edit($id){
+        $memos = Memo::select('memos.*')
+        ->where('user_id','=',\Auth::id())
+        ->whereNull('deleted_at')
+        ->orderBy('updated_at','DESC')
+        ->get();
+
+        $edit_memo = Memo::find($id);
+
+        return view('edit',[
+            'memos' => $memos,
+            'edit_memo' => $edit_memo,
+        ]);
+    }
 }

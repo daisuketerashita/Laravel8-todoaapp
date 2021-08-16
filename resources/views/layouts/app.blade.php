@@ -92,7 +92,7 @@
                         <div class="card-header">メモ一覧</div>
                         <div class="card-body">
                         @foreach($memos as $memo)
-                            <a href="" class="card-text d-block">{{ $memo->content }}</a>
+                            <a href="{{ route('edit',['id' => $memo->id]) }}" class="card-text d-block">{{ $memo->content }}</a>
                         @endforeach
                         </div>
                     </div>
