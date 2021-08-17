@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Memo;
 
@@ -37,10 +38,15 @@ class HomeController extends Controller
     public function store(Request $request){
         $posts = $request->all();
 
-        Memo::insert([
-            'content' => $posts['content'],
-            'user_id' => \Auth::id(),
-        ]);
+        /* ここからトランザクション開始 */
+        DB::transaction(function() use($posts){
+            $memo_id = Memo::insertGetId([
+                'content' => $posts['content'],
+                'user_id' => \Auth::id(),
+            ]);
+        });
+
+        
 
         return redirect()->route('home');
     }
