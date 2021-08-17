@@ -34,7 +34,13 @@ class HomeController extends Controller
         ->orderBy('updated_at','DESC')
         ->get();
 
-        return view('create',['memos' => $memos]);
+        //タグデータを取得
+        $tags = Tag::where('user_id','=',\Auth::id())
+        ->whereNull('deleted_at')
+        ->orderBy('id','DESC')
+        ->get();
+
+        return view('create',['memos' => $memos,'tags' => $tags]);
     }
 
     public function store(Request $request){
