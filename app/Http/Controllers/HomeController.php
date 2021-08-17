@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\Memo;
+use App\Models\Tag;
+use App\Models\MemoTag;
 
 class HomeController extends Controller
 {
@@ -44,7 +46,19 @@ class HomeController extends Controller
                 'content' => $posts['content'],
                 'user_id' => \Auth::id(),
             ]);
+            $tag_exists = Tag::where('user_id','=',\Auth::id())->where('name','=',$posts['new_tag'])->exists();
+            if(!empty($posts['new_tag']) && !$tag_exists){
+                $tag_id = Tag::insertGetId([
+                    'name' => $posts['new_tag'],
+                    'user_id' => \Auth::id(),
+                ]);
+                MemoTag::insert([
+                    'memo_id' => $memo_id,
+                    'tag_id' => $tag_id,
+                ]);
+            }
         });
+        /* ここまでがトランザクションの範囲 */
 
         
 
